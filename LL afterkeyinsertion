@@ -1,0 +1,61 @@
+//2. Linked List insertion after a given key
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node{
+    int data;
+    struct Node* next;
+} Node;
+
+
+Node* createnode(int data){
+    Node* newnode=(Node*)malloc(sizeof(Node));
+    newnode->data=data;
+    newnode->next=NULL;
+    return newnode;
+}
+
+void insertend(Node** head , int item, int data){
+    Node* newnode = createnode(data);
+    if(newnode == NULL){
+        printf("insufficient memory");
+        return;
+    }
+    if(*head == NULL){
+        *head = newnode;
+    } else {
+        Node* curr = *head;
+        while(curr != NULL && curr->data != item){
+            curr = curr->next;
+        }
+        if (curr != NULL) {
+            newnode->next = curr->next;
+            curr->next = newnode;
+        } else {
+            printf("key not present");
+        }
+    }
+}
+
+
+
+void display(Node* head){
+    Node* current = head;
+    while(current != NULL){
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL");
+}
+
+int main(){
+    Node* linkedList = NULL;
+    
+    insertend(&linkedList,0, 3);
+    insertend(&linkedList,3, 1);
+    insertend(&linkedList,1, 4);
+    insertend(&linkedList,6, 2);
+
+    printf("Linked List: ");
+    display(linkedList);
+}
