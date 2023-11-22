@@ -1,0 +1,73 @@
+//3. Linked List insertion before a given key
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node{
+    int data;
+    struct Node* next;
+} Node;
+
+
+Node* createnode(int data){
+    Node* newnode=(Node*)malloc(sizeof(Node));
+    newnode->data=data;
+    newnode->next=NULL;
+    return newnode;
+}
+
+void insert(Node** head, int key, int data) {
+    Node* newnode = createnode(data);
+    if (newnode == NULL) {
+        printf("Insufficient memory.\n");
+        return;
+    }
+
+    if (*head == NULL) {
+        *head = newnode;
+    } else {
+        if ((*head)->data == key) {
+            newnode->next = *head;
+            *head = newnode;
+            return;
+        }
+
+        Node* curr = *head;
+        while (curr->next != NULL && curr->next->data != key) {
+            curr = curr->next;
+        }
+
+        if (curr->next != NULL) {
+            newnode->next = curr->next;
+            curr->next = newnode;
+        } else {
+            printf("Key not present.\n");
+         
+        }
+    }
+}
+
+
+
+
+void display(Node* head){
+    Node* current = head;
+    while(current != NULL){
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL");
+}
+
+int main(){
+    Node* linkedList = NULL;
+    
+    insert(&linkedList,0, 3);
+    insert(&linkedList,3, 1);
+    insert(&linkedList,1, 4);
+    insert(&linkedList,4, 2);
+    insert(&linkedList,1, 6);
+    insert(&linkedList,7, 4);
+
+    printf("Linked List: ");
+    display(linkedList);
+}
