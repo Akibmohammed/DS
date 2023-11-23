@@ -1,0 +1,100 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+typedef struct Node{
+   int data;
+   struct Node* next;
+} Node;
+
+Node* createnode(int data){
+   Node* newnode=(Node*)malloc(sizeof(Node));
+   newnode->data=data;
+   newnode->next=NULL;
+   return newnode;
+}
+
+void push(Node** head,int data){
+   Node* newnode = createnode(data);
+   if(newnode == NULL){
+       printf("insufficient memory");
+       return;
+   }
+   if(*head == NULL){
+       *head = newnode;
+   } else {
+       newnode->next=*head;
+       *head = newnode;
+   }
+}
+
+void pop(Node** head){
+   if(*head==NULL){
+       printf("stack is empty");
+   } else {
+       Node* ptr= *head;
+       *head=(*head)->next;
+       free(ptr);
+   }
+}
+
+void peek(Node** head){
+   if(*head==NULL){
+       printf("empty stack");
+   } else {
+       printf("top element is %d: ",(*head)->data);
+   }
+}
+
+void display(Node** head){
+   Node* current = *head;
+   while(current != NULL){
+       printf("%d -> ", current->data);
+       current = current->next;
+   }
+   printf("NULL");
+}
+
+int main(){
+	int a;
+	int value;
+	Node* linkedList = NULL;
+	while(true){
+	printf("\nOPerations: 1.Push  2.pop   3.display   4.peek");
+	printf("enter your choice(press 0 to exit): \n");
+	scanf("%d",&a);
+		if(a!=0){
+	
+		switch(a){
+			case 1: 
+				printf("enter value to push");
+				scanf("%d",&value); 
+			    push(&linkedList, value);
+			    break;
+			
+			case 2:
+				pop(&linkedList);
+				break;
+				
+			case 3:
+				display(&linkedList);
+				break;
+			
+			case 4:
+				peek(&linkedList);
+				break;
+			
+			default:
+				printf("invalid");
+				break;
+				
+			}
+		}
+		else
+		break;
+		
+	}
+	return 0;
+	
+	}
+		
