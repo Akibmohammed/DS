@@ -1,0 +1,90 @@
+
+//6. Linked List search
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+Node* createNode(int data) {
+    Node* newnode = (Node*)malloc(sizeof(Node));
+    newnode->data = data;
+    newnode->next = NULL;
+    return newnode;
+}
+
+void insertAtIndex(Node** head, int index, int data) {
+    if (index < 0) {
+        printf("Invalid index.\n");
+        return;
+    }
+
+    Node* newnode = createNode(data);
+    if (newnode == NULL) {
+        printf("Insufficient memory.\n");
+        return;
+    }
+
+    if (index == 0) {
+        newnode->next = *head;
+        *head = newnode;
+    } else {
+        Node* curr = *head;
+        for (int i = 0; i < index - 1 && curr != NULL; i++) {
+            curr = curr->next;
+        }
+
+        if (curr != NULL) {
+            newnode->next = curr->next;
+            curr->next = newnode;
+        } else {
+            printf("Index out of bounds.\n");
+        }
+    }
+}
+
+Node* search(Node* head, int data, int* count) {
+    Node* current = head;
+
+    while (current != NULL && current->data != data) {
+        current = current->next;
+        (*count)++;
+    }
+
+    if (current != NULL) {
+        printf("The position of value %d is at %d index\n", data, *count);
+    } else {
+        printf("Element not found\n");
+    }
+
+    return current;
+}
+
+void display(Node* head) {
+    Node* current = head;
+    while (current != NULL) {
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    Node* linkedList = NULL;
+
+    insertAtIndex(&linkedList, 0, 3);
+    insertAtIndex(&linkedList, 1, 1);
+    insertAtIndex(&linkedList, 2, 4);
+    insertAtIndex(&linkedList, 1, 2);
+    insertAtIndex(&linkedList, 4, 6);
+
+    printf("Linked List: ");
+    display(linkedList);
+
+    int count = 1; 
+    search(linkedList, 3, &count);
+
+    return 0;
+}
