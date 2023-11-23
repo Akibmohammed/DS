@@ -1,0 +1,62 @@
+#include<stdio.h>
+#define MAXSIZE 100
+
+int front = -1;
+int rear = -1;
+int size = 0;
+
+void enq(int q[], int item){
+  if (rear == MAXSIZE-1){
+      printf("queue is full\n");
+  }
+  else{
+      if(front == -1 && rear == -1){
+          front = 0;
+          q[++rear] = item;
+          printf("element added\n");
+          size++;
+      }
+      else{
+          q[++rear] = item;
+          printf("element added\n");
+          size++;
+      }
+  }
+}
+
+void deq(int q[]){
+  if (front == -1){
+      printf("queue is empty\n");
+  }
+  else{
+      int item = q[front];
+      if(front == rear){
+          front = -1;
+          rear = -1;
+      }
+      else{
+          front = front + 1;
+      }
+      printf("element removed: %d\n", item);
+      size--;
+  }
+}
+
+void display(int q[]){
+  for(int i=front; i<=rear; i++){
+      printf("elements are: %d\n", q[i]);
+  }
+}
+
+int main(){
+  int q[MAXSIZE];
+  enq(q,3);
+  enq(q,5);
+  enq(q,2);
+  enq(q,1); 
+  display(q);
+  deq(q);
+  deq(q);
+  display(q);
+  return 0;
+}
