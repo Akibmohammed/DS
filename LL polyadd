@@ -1,0 +1,137 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+typedef struct Node{
+	int coeff;
+	int exp;
+	Struct Node* next;
+	} Node; 
+	
+Node* createnode(int coeff,int exp){
+   Node* newnode=(Node*)malloc(sizeof(Node));
+   newnode->coeff = coeff;
+   newnode->exp = exp;
+   newnode->next = NULL;
+   return newnode;
+}
+	
+void insert(Node** head; int coeff; int exp){
+	Node* newnode = createnode(coeff, exp);
+	if(*head == NULL){
+		*head = newnode;
+		}
+	else{
+		temp=*head;
+		while(temp->next != NULL){
+				temp=temp->next;
+				}
+		temp->next = newnode;
+		}
+		
+void polyadd(Node* poly1, Node* poly2, Node** result) {
+
+    while (poly1 != NULL || poly2 != NULL) {
+    
+        Node* temp;
+        temp->next=NULL;
+        
+        if (poly1 != NULL && poly2 != NULL) {
+        if (poly1->exp == poly2->exp) {
+		    temp->coeff= poly1->coeff + poly20->coeff;
+		    temp->exp = poly1->exp;
+		    poly1 = poly1->next;
+		    poly2 = poly2->next;
+        }
+        
+        else if(poly1->exp > poly2->exp){
+        	temp->coeff = poly1->coeff;
+        	temp->exp = poly1->exp;
+        	poly1 = poly1->next;
+        	}
+        	
+        else{
+        	temp->coeff = poly2->coeff;
+        	temp->exp = poly2->exp;
+        	poly1 = poly2->next;
+        	}
+        	
+ 
+        } else if (poly1 != NULL) {
+            temp->coeff = poly1->coeff;
+            temp->expo = poly1->expo;
+            poly1 = poly1->next;
+            
+        } else if (poly2 != NULL) {
+            temp->coeff = poly2->coeff;
+            temp->expo = poly2->expo;
+            poly2 = poly2->next;
+        }
+        Node* curresult = *result;
+        if(*result==NULL){
+            *result=temp;
+        }
+        else{
+            while (currentResult->next != NULL) {
+                currentResult = currentResult->next;
+            }
+            currentResult->next = temp;
+        }
+
+    }
+}
+
+void display(Node* head) {
+    while (head != NULL) {
+        printf("%dx^%d", head->coeff, head->expo);
+        
+        if (head->next != NULL) {
+            printf(" + ");
+        }
+        head = head->next;
+    }
+    printf("\n");
+}
+
+int main(){
+	Node* poly1= NULL;
+	Node* poly2= NULL;
+	Node* result= NULL;
+	
+	int a, b;
+    char op = 'y';
+
+    printf("\nEnter first polynomial:\n");
+    while (op == 'y') {
+        printf("Enter coefficient: ");
+        scanf("%d", &a);
+        printf("Enter exponent: ");
+        scanf("%d", &b);
+        insert(&poly1, a, b);
+        printf("Do you want to continue (y/n): ");
+        scanf(" %c", &op);
+    }
+
+    op = 'y';
+
+    printf("\nEnter second polynomial:\n");
+    while (op == 'y') {
+        printf("Enter coefficient: ");
+        scanf("%d", &a);
+        printf("Enter exponent: ");
+        scanf("%d", &b);
+        insert(&poly2, a, b);
+        printf("Do you want to continue (y/n): ");
+        scanf(" %c", &op);
+    }
+
+    polyadd(poly1, poly2, &result);
+    printf("First polynomial: ");
+    printPolynomial(poly1);
+    printf("Second polynomial: ");
+    printPolynomial(poly2);
+    printf("Sum of polynomials: ");
+    printPolynomial(result);
+
+    return 0;
+}
