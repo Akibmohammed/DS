@@ -1,5 +1,5 @@
 
-//5. Linked List delete by value
+//6. Linked List delete by value
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -48,35 +48,41 @@ void insertAtIndex(Node** head, int index, int data) {
 }
 
 
-void deletebyvalue(Node** head, int data) {
+void deletebyindex(Node** head, int index) {
+    if (index < 0) {
+        printf("Invalid index.\n");
+        return;
+    }
+
     if (*head == NULL) {
-        printf("List is empty.\n");
+        printf("EMPTY LIST.\n");
         return;
     }
 
     Node* temp = *head;
     Node* prev = NULL;
 
-    if (temp != NULL && temp->data == data) {
-        *head = temp->next;
-        free(temp);
-        return;
-    }
-
-    while (temp != NULL && temp->data != data) {
+    int i;
+    for (i = 0; i < index && temp != NULL; i++) {
         prev = temp;
         temp = temp->next;
     }
 
-    if (temp == NULL) {
-        printf("Element with data %d not found.\n", data);
+    if (i != index || temp == NULL) {
+        printf("Element with index %d not found.\n", index);
         return;
     }
 
-    prev->next = temp->next;
-    free(temp);
+    if (prev != NULL) {
+        prev->next = temp->next;
+        free(temp);
+    } else {
+        *head = temp->next;
+        free(temp);
+    }
 }
-        
+
+
 
 
 void display(Node* head) {
@@ -100,8 +106,9 @@ int main() {
     printf("Linked List: ");
     display(linkedList);
     
-    deletebyvalue(&linkedList, 4);
-    deletebyvalue(&linkedList, 6);
+
+    deletebyindex(&linkedList, 2);
+    deletebyindex(&linkedList,0);
     
     printf("Linked List after deletion: ");
     display(linkedList);
