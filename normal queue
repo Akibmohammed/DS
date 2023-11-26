@@ -1,0 +1,95 @@
+#include <stdio.h>
+#define MAXSIZE 100
+
+int front = -1;
+int rear = -1;
+int size = 0;
+
+void enq(int q[], int item) {
+    if (rear == MAXSIZE - 1) {
+        printf("Queue is full.\n");
+    } else {
+        if (front == -1 && rear == -1) {
+            front = 0;
+            q[++rear] = item;
+            printf("Element added.\n");
+            size++;
+        } else {
+            q[++rear] = item;
+            printf("Element added.\n");
+            size++;
+        }
+    }
+}
+
+void deq(int q[]) {
+    if (front == -1) {
+        printf("Queue is empty.\n");
+    } else {
+        int item = q[front];
+        if (front == rear) {
+            front = -1;
+            rear = -1;
+        } else {
+            front = front + 1;
+        }
+        printf("Element removed: %d\n", item);
+        size--;
+    }
+}
+
+void display(int q[]) {
+    if (front == -1) {
+        printf("Queue is empty.\n");
+    } else {
+        printf("Queue elements: ");
+        for (int i = front; i <= rear; i++) {
+            printf("%d ", q[i]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    int q[MAXSIZE];
+    char continueChoice = 'y';
+
+    while (continueChoice == 'y' || continueChoice == 'Y') {
+        printf("\nMenu:\n");
+        printf("1. Enqueue\n");
+        printf("2. Dequeue\n");
+        printf("3. Display\n");
+        printf("4. Exit\n");
+
+        int choice;
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                {
+                    int item;
+                    printf("Enter element to enqueue: ");
+                    scanf("%d", &item);
+                    enq(q, item);
+                    break;
+                }
+            case 2:
+                deq(q);
+                break;
+            case 3:
+                display(q);
+                break;
+            case 4:
+                printf("Exiting program.\n");
+                return 0;
+            default:
+                printf("Invalid choice.\n");
+        }
+
+        printf("Do you want to continue? (y/n): ");
+        scanf(" %c", &continueChoice);
+    }
+
+    return 0;
+}
