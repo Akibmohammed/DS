@@ -1,0 +1,102 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+Node* createNode(int data) {
+    Node* newnode = (Node*)malloc(sizeof(Node));
+    newnode->data = data;
+    newnode->next = NULL;
+    return newnode;
+}
+
+void insertAtIndex(Node** head, int index, int data) {
+    if (index < 0) {
+        printf("Invalid index.\n");
+        return;
+    }
+
+    Node* newnode = createNode(data);
+    if (newnode == NULL) {
+        printf("Insufficient memory.\n");
+        return;
+    }
+
+    if (index == 0) {
+        newnode->next = *head;
+        *head = newnode;
+    } else {
+        Node* curr = *head;
+        for (int i = 0; i < index - 1 && curr != NULL; i++) {
+            curr = curr->next;
+        }
+
+        if (curr != NULL) {
+            newnode->next = curr->next;
+            curr->next = newnode;
+        } else {
+            printf("Index out of bounds.\n");
+        }
+    }
+}
+
+void deleteByValue(Node** head, int value) {
+    if (*head == NULL) {
+        printf("EMPTY LIST.\n");
+        return;
+    }
+
+    Node* temp = *head;
+    Node* prev = NULL;
+
+    while (temp != NULL && temp->data != value) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        printf("Element with value %d not found.\n", value);
+        return;
+    }
+
+    if (prev != NULL) {
+        prev->next = temp->next;
+        free(temp);
+    } else {
+        *head = temp->next;
+        free(temp);
+    }
+}
+
+void display(Node* head) {
+    Node* current = head;
+    while (current != NULL) {
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    Node* linkedList = NULL;
+
+    insertAtIndex(&linkedList, 0, 3);
+    insertAtIndex(&linkedList, 1, 1);
+    insertAtIndex(&linkedList, 2, 4);
+    insertAtIndex(&linkedList, 1, 2);
+    insertAtIndex(&linkedList, 4, 6);
+
+    printf("Linked List: ");
+    display(linkedList);
+
+    deleteByValue(&linkedList, 2);
+    deleteByValue(&linkedList, 3);
+
+    printf("Linked List after deletion: ");
+    display(linkedList);
+
+    return 0;
+}
