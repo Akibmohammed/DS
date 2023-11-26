@@ -1,0 +1,99 @@
+#include <stdio.h>
+#define MAXSIZE 10
+
+int front = -1;
+int rear = -1;
+
+void enq(int q[], int item) {
+    if (front == -1) {
+        front = rear = 0;
+        q[rear] = item;
+    } else {
+        if ((rear + 1) % MAXSIZE != front) {
+            rear = (rear + 1) % MAXSIZE;
+            q[rear] = item;
+            printf("Element added.\n");
+        } else {
+            printf("Queue is full.\n");
+        }
+    }
+}
+
+void deq(int q[]) {
+    if (front == -1) {
+        printf("Queue is empty.\n");
+    } else {
+        int item = q[front];
+        if (front == rear) {
+            front = rear = -1;
+        } else {
+            front = (front + 1) % MAXSIZE;
+        }
+        printf("Dequeued element: %d\n", item);
+    }
+}
+
+void display(int q[]) {
+    if (front == -1) {
+        printf("Queue is empty.\n");
+    } else {
+        printf("Queue elements: ");
+        for (int i = front; i != (rear + 1) % MAXSIZE; i = (i + 1) % MAXSIZE) {
+            printf("%d ", q[i]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    int q[MAXSIZE];
+    int choice;
+    char continueChoice;
+
+    while (1) {
+        printf("\nMenu:\n");
+        printf("1. Enqueue\n");
+        printf("2. Dequeue\n");
+        printf("3. Display\n");
+        printf("4. Exit\n");
+
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                {
+                    int item;
+                    printf("Enter element to enqueue: ");
+                    scanf("%d", &item);
+                    enq(q, item);
+                    break;
+                }
+            case 2:
+                deq(q);
+                break;
+            case 3:
+                display(q);
+                break;
+            case 4:
+                printf("Exiting program.\n");
+                return 0;
+            default:
+                printf("Invalid choice.\n");
+        }
+
+        printf("Do you want to continue? (y/n): ");
+        scanf(" %c", &continueChoice);
+
+        if (continueChoice != 'y' && continueChoice != 'Y') {
+            break;
+        }
+    }
+
+    return 0;
+}
+
+ deq(q);
+ display(q);
+ return 0;
+}
