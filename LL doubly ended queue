@@ -1,0 +1,125 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+typedef struct Node{
+   int data;
+   struct Node* next;
+} Node;
+
+Node* createnode(int data){
+   Node* newnode=(Node*)malloc(sizeof(Node));
+   newnode->data=data;
+   newnode->next=NULL;
+   return newnode;
+}
+
+void enqueue(Node** head,int data){
+   Node* newnode = createnode(data);
+   if(newnode == NULL){
+       printf("insufficient memory");
+       return;
+   }
+   if(*head == NULL){
+       *head = newnode;
+   } else {
+       Node* ptr = *head;
+       while(ptr->next != NULL){
+       	ptr = ptr->next;
+       	}
+       	ptr->next = newnode;
+   }
+}
+
+void enqueueatfront(Node** head,int data){
+   Node* newnode = createnode(data);
+   if(newnode == NULL){
+       printf("insufficient memory");
+       return;
+   }
+   if(*head == NULL){
+       *head = newnode;
+   } else {
+       newnode->next=*head;
+       *head=newnode;
+       	
+   }
+}
+
+
+void dequeue(Node** head){
+   if(*head==NULL){
+       printf("stack is empty");
+   } else {
+       Node* ptr= *head;
+       *head=(*head)->next;
+       free(ptr);
+   }
+}
+
+void dequeueatrear(Node** head){
+   if(*head==NULL){
+       printf("stack is empty");
+   } else {
+     Node* ptr = *head;
+       while(ptr->next != NULL){
+       	ptr = ptr->next;
+       	}
+       	free(ptr);
+}
+}
+
+void display(Node** head){
+   Node* current = *head;
+   while(current != NULL){
+       printf("%d -> ", current->data);
+       current = current->next;
+   }
+   printf("NULL");
+}
+
+int main(){
+	int a;
+	int value;
+	Node* linkedList = NULL;
+	while(true){
+	printf("\nOperations:\n1.enqueue at back\n2.enqueue at front\n3.dequeue at front \n4.dequeue at front\n5.display");
+	printf("\nenter your choice(press 0 to exit): ");
+	scanf("%d",&a);
+		if(a!=0){
+	
+		switch(a){
+			case 1: 
+				printf("enter value: ");
+				scanf("%d",&value); 
+			    enqueue(&linkedList, value);
+			    break;
+			    
+			 case 2:
+			 	printf("enter value: ");
+				scanf("%d",&value); 
+			    enqueueatfront(&linkedList, value);
+			    break;
+			
+			case 3:
+				dequeue(&linkedList);
+				break;
+				
+			case 4:
+				dequeueatrear(&linkedList);
+				break;
+				
+			case 5:
+				display(&linkedList);
+				break;
+			
+			default:
+				printf("invalid");
+				break;
+				
+			}
+		}
+		else
+		break;
+	}
+}
