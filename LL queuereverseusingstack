@@ -1,0 +1,133 @@
+#include<stdio.h>
+#include<stdbool.h>
+#include<stdlib.h>
+
+typedef struct node {
+   int data;
+   struct node* next;
+} node;
+
+node* create_node(int data) {
+   node* newnode = (node*)malloc(sizeof(node));
+   newnode->data = data;
+   newnode->next = NULL;
+   return newnode;
+}
+
+void push(node** head, int data) {
+   node* newnode = create_node(data);
+   if (newnode == NULL) {
+       printf("Memory allocation failed\n");
+   }
+   else{
+       if (*head == NULL) {
+           *head = newnode;
+           return;
+       }
+       newnode->next=*head;
+       *head= newnode;
+   }
+}
+
+void DisplayS(node* head) {
+    if (head == NULL) {
+       printf("Stack empty\n");
+   } else {
+       printf("stack:\n");
+       while (head != NULL) {
+           printf("%d\n", head->data);
+           head = head->next;
+       }
+       printf("\n");
+   }
+}
+
+int pop(node** head) {
+   if (*head == NULL) {
+       printf("Stack empty\n");
+   } else {
+       node* ptr = *head;
+       *head = (*head)->next;
+       int data = ptr->data;
+       free(ptr);
+       return data;
+   }
+}
+
+void Enqueue(node** head, int data) {
+   node* newnode = create_node(data);
+   if (newnode == NULL) {
+       printf("Memory allocation failed\n");
+   }
+   else{
+       if (*head == NULL) {
+           *head = newnode;
+           return;
+       }
+       node* ptr = *head;
+       while(ptr->next!=NULL){
+       ptr=ptr->next;
+       }
+       ptr->next=newnode;
+   }
+}
+
+void DisplayQ(node* head) {
+    if (head == NULL) {
+       printf("Queue empty\n");
+   } else {
+       while (head != NULL) {
+           printf("%d\n", head->data);
+           head = head->next;
+       }
+       printf("\n");
+   }
+}
+
+int Dequeue(node** head) {
+   if (*head == NULL) {
+       printf("Queue empty\n");
+   } else {
+       node* ptr = *head;
+       *head = (*head)->next;
+       int data = ptr->data;
+       free(ptr);
+       return data;
+   }
+}
+
+void Reverse(node** head1,node** head2){
+	printf("\nQueue\n");
+	DisplayQ(*head1);
+	while(*head1!=NULL){
+		push(head2,Dequeue(head1));
+	}
+	while(*head2!=NULL){
+		Enqueue(head1,pop(head2));
+	}
+	printf("\nReversed Queue:\n");
+	DisplayQ(*head1);
+}
+
+int main(){
+	node*stack=NULL;
+	node*queue=NULL;
+	int a,element;
+	while(true){
+		printf("\n1.Enqueue\n2.Reverse Queue");
+		printf("\nEnter option(PRESS 0 TO EXIT): ");	
+		scanf("%d",&a);
+		if(a!=0){
+           	switch(a){
+               case 1: printf("Enter element:");
+                      scanf("%d",&element);
+                      Enqueue(&queue,element);
+                      break;
+               case 2: Reverse(&queue,&stack); 
+           }
+       }
+       else
+           break;
+   }
+}
+
