@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+#define MAX_SIZE 100
+
+int stack[MAX_SIZE];
+int top = -1;
+
+void push(int value) {
+    if (top == MAX_SIZE - 1) {
+        printf("stack overflow");
+        exit(EXIT_FAILURE);
+    } else {
+        stack[++top] = value;
+    }
+}
+
+int pop() {
+    if (top == -1) {
+        printf("stack underflow");
+        exit(EXIT_FAILURE);
+    } else {
+        return stack[top--];
+    }
+}
+
+int evaluate(char postfix[MAX_SIZE]) {
+    int i;
+    int op1;
+    int op2;
+    for (i = 0; postfix[i] != '\0'; i++) {
+        if (postfix[i] >= '0' && postfix[i] <= '9') {
+            push(postfix[i] - '0');
+        } else {
+            op2 = pop();
+            op1 = pop();
+
+            switch (postfix[i]) {
+                case '+':
+                    push(op1 + op2);
+                    break;
+
+                case '-':
+                    push(op1 - op2);
+                    break;
+
+                case '*':
+                    push(op1 * op2);
+                    break;
+
+                case '/':
+                    if (op2 == 0) {
+                        printf("Division by zero error");
+                        exit(EXIT_FAILURE);
+                    } else {
+                        push(op1 / op2);
+                        break;
+                    }
+
+                case '^':
+                    push(pow(op1, op2));
+                    break;
+
+                default:
+                    printf("Invalid operator");
+                    exit(EXIT_FAILURE);
+            }
+        }
+    }
+    return pop();
+}
+
+int main() {
+    char postfix[MAX_SIZE];
+
+    printf("Enter postfix expression: ");
+    scanf("%s", postfix);
+
+    int result = evaluate(postfix);
+    printf("Result of evaluated postfix expression: %d", result);
+    return 0;
+}
+
