@@ -1,0 +1,86 @@
+#include <stdio.h>
+#define MAX_SIZE 100
+
+typedef struct {
+    int power;
+    int coeff;
+} Poly;
+
+Poly poly1[MAX_SIZE], poly2[MAX_SIZE], result[MAX_SIZE];
+
+void insert(Poly a[MAX_SIZE], int n) {
+    for (int i = 0; i < n; i++) {
+        printf("enter the coefficient: ");
+        scanf("%d", &a[i].coeff);
+        printf("enter the power: ");
+        scanf("%d", &a[i].power);
+    }
+}
+
+int f = 0;
+
+void addpoly(Poly a[MAX_SIZE], Poly b[MAX_SIZE], Poly c[MAX_SIZE], int n1, int n2) {
+    int i = 0, j = 0, k = 0;
+    
+    while (i < n1 && j < n2) {
+        if (a[i].power == b[j].power) {
+            c[k].coeff = a[i].coeff + b[j].coeff;
+            c[k].power = a[i].power;
+            i++;
+            j++;
+            k++;
+            f++;
+        } else if (a[i].power > b[j].power) {
+            c[k] = a[i];
+            i++;
+            k++;
+            f++;
+        } else {
+            c[k] = b[j];
+            j++;
+            k++;
+            f++;
+        }
+    }
+
+    while (i < n1) {
+        c[k] = a[i];
+        i++;
+        k++;
+        f++;
+    }
+
+    while (j < n2) {
+        c[k] = b[j];
+        j++;
+        k++;
+        f++;
+    }
+}
+
+void display(Poly a[MAX_SIZE], int n) {
+    for (int i = 0; i < n; i++) {
+        printf("%dx^%d", a[i].coeff, a[i].power);
+        if (i < n - 1) {
+            printf(" + ");
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    int len1, len2;
+    printf("please enter the no of terms in polynomial 1: ");
+    scanf("%d", &len1);
+    insert(poly1, len1);
+    printf("please enter the no of terms in polynomial 2: ");
+    scanf("%d", &len2);
+    insert(poly2, len2);
+
+    addpoly(poly1, poly2, result, len1, len2);
+    printf("the sum of two polynomials are: ");
+    display(result,f);
+
+    return 0;
+}
+
