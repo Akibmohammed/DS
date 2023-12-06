@@ -1,0 +1,102 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node{
+   int data;
+   struct Node* next;
+} node;
+
+node* createnode(int data){
+   node* newnode= (node*)malloc(sizeof(node));
+   newnode->data=data;
+   newnode->next=NULL;
+   return newnode;
+}
+
+void insert(node** head, int data) {
+    node* newnode = createnode(data);
+    if (newnode == NULL) {
+        printf("insufficient memory");
+        return;
+    }
+
+    node* current = *head;
+    node* prev = NULL;
+
+    while (current != NULL) {
+        prev = current;
+        current = current->next;
+    }
+
+    if (prev == NULL) {
+        // Insert at the beginning
+        newnode->next = *head;
+        *head = newnode;
+    } else {
+        // Insert in the middle or at the end
+        prev->next = newnode;
+        newnode->next = current;
+    }
+}
+
+
+
+node* common(node* a, node* b){
+    node* c = NULL;
+    node* ptr1=a;
+    node* ptr2=b;
+
+    while (ptr1!= NULL) {
+        ptr2=b;
+        while(ptr2!=NULL){
+        if (ptr1->data == ptr2->data) {
+            insert(&c, ptr1->data);
+            ptr2= ptr2->next;
+        }
+        else {
+            ptr2= ptr2->next;
+        }
+    }
+    ptr1=ptr1->next;
+    }
+    return c;
+}
+
+
+void display(node* head){
+   node* curr=head;
+   while(curr!=NULL){
+       printf("%d -> ",curr->data);
+       curr=curr->next;
+   }
+   printf("NULL\n");
+}
+
+int main(){
+   node* a=NULL;
+   node* b=NULL;
+   node* c=NULL;
+
+   insert(&a,1);
+   insert(&a,3);
+   insert(&a,2);
+   insert(&a,5);
+
+   insert(&b,2);
+   insert(&b,1);
+   insert(&b,1);
+   insert(&b,7);
+
+   printf("List A: ");
+   display(a);
+
+   printf("List B: ");
+   display(b);
+
+   c = common(a, b);
+
+   printf("List C (Common Elements): ");
+   display(c);
+
+   return 0;
+}
