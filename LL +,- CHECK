@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node* next;
+} node;
+
+node* createnode(int data) {
+    node* newnode = (node*)malloc(sizeof(node));
+    newnode->data = data;
+    newnode->next = NULL;
+    return newnode;
+}
+
+void insert(node** head, int data) {
+    node* newnode = createnode(data);
+    if (newnode == NULL) {
+        printf("insufficient memory");
+        return;
+    }
+
+    node* current = *head;
+    node* prev = NULL;
+
+    while (current != NULL) {
+        prev = current;
+        current = current->next;
+    }
+
+    if (prev == NULL) {
+        newnode->next = *head;
+        *head = newnode;
+    } else {
+        prev->next = newnode;
+        newnode->next = current;
+    }
+}
+
+void posneg(node* a, node** e, node** f) {
+    while (a != NULL) {
+        if (a->data < 0) {
+            insert(f, a->data);
+        } else if (a->data > 0) {
+            insert(e, a->data);
+        }
+        a = a->next;
+    }
+}
+
+void display(node* head) {
+    node* curr = head;
+    while (curr != NULL) {
+        printf("%d -> ", curr->data);
+        curr = curr->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    node* a = NULL;
+    node* e = NULL;
+    node* f = NULL;
+
+    insert(&a, 1);
+    insert(&a, -3);
+    insert(&a, 2);
+    insert(&a, 5);
+    insert(&a, -1);
+    insert(&a, 0);
+    insert(&a, -2);
+
+
+    printf("List A: ");
+    display(a);
+
+    posneg(a, &e, &f);
+    printf("List E (Positive Numbers): ");
+    display(e);
+
+    printf("List F (Negative Numbers): ");
+    display(f);
+
+    return 0;
+}
