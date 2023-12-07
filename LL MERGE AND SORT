@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+// Function to create a new node with given data
+Node* createNode(int data) {
+    Node* newnode = (Node*)malloc(sizeof(Node));
+    newnode->data = data;
+    newnode->next = NULL;
+    return newnode;
+}
+
+// Function to insert a new node at the end of a linked list
+void insertAtEnd(Node** head, int data) {
+    Node* newnode = createNode(data);
+    if (*head == NULL) {
+        *head = newnode;
+    } else {
+        Node* temp = *head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newnode;
+    }
+}
+
+// Function to merge two linked lists
+Node* mergeLists(Node* list1, Node* list2) {
+    Node* mergedList = NULL;
+
+    // Merge the first list
+    while (list1 != NULL) {
+        insertAtEnd(&mergedList, list1->data);
+        list1 = list1->next;
+    }
+
+    // Merge the second list
+    while (list2 != NULL) {
+        insertAtEnd(&mergedList, list2->data);
+        list2 = list2->next;
+    }
+
+    return mergedList;
+}
+
+// Function to sort a linked list using selection sort
+void selectionSort(Node* head) {
+    Node *current, *temp, *min;
+
+    for (current = head; current->next != NULL; current = current->next) {
+        min = current;
+
+        for (temp = current->next; temp != NULL; temp = temp->next) {
+            if (temp->data < min->data) {
+                min = temp;
+            }
+        }
+
+        // Swap the data of the current node with the minimum node
+        int tmp = current->data;
+        current->data = min->data;
+        min->data = tmp;
+    }
+}
+
+// Function to display elements of a linked list
+void display(Node* head) {
+    Node* current = head;
+    while (current != NULL) {
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    Node* list1 = NULL;
+    Node* list2 = NULL;
+
+    // Populate the first linked list
+    insertAtEnd(&list1, 3);
+    insertAtEnd(&list1, 1);
+    insertAtEnd(&list1, 4);
+
+    // Populate the second linked list
+    insertAtEnd(&list2, 2);
+    insertAtEnd(&list2, 5);
+
+    printf("First Linked List: ");
+    display(list1);
+    printf("Second Linked List: ");
+    display(list2);
+
+    // Merge the linked lists
+    Node* mergedList = mergeLists(list1, list2);
+
+    // Sort the merged linked list
+    selectionSort(mergedList);
+
+    printf("Merged and Sorted Linked List: ");
+    display(mergedList);
+
+    return 0;
+}
