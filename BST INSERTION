@@ -37,11 +37,27 @@ TreeNode* insertion(TreeNode* root, int item) {
     return root;
 }
 
-void inorderTraversal(TreeNode* root) {
+/*void inorderTraversal(TreeNode* root) {
     if (root != NULL) {
         inorderTraversal(root->left);
         printf("%d ", root->data);
         inorderTraversal(root->right);
+    }
+}
+
+void preorderTraversal(TreeNode* root){
+    if(root != NULL){
+        printf("%d ", root->data);
+        preorderTraversal(root->left);
+        preorderTraversal(root->right);
+    }
+}*/
+
+void postorderTraversal(TreeNode* root){
+    if(root != NULL){
+        postorderTraversal(root->left);
+        postorderTraversal(root->right);
+        printf("%d ", root->data);
     }
 }
 
