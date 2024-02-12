@@ -1,0 +1,136 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int coeff;
+    int expo;
+    struct Node* next;
+};
+
+typedef struct Node Node;
+
+Node* createNode(int coeff, int expo) {
+    Node* newnode = (Node*)malloc(sizeof(Node));
+    if (newnode == NULL) {
+        printf("Memory allocation failed.\n");
+        exit(1);
+    }
+    newnode->coeff = coeff;
+    newnode->expo = expo;
+    newnode->next = NULL;
+    return newnode;
+}
+
+void insert(Node** head, int coeff, int expo) {
+    Node* newnode = createNode(coeff, expo);
+    if (*head == NULL) {
+        *head = newnode;
+    } else {
+        Node* ptr = *head;
+        while (ptr->next != NULL) {
+            ptr = ptr->next;
+        }
+        ptr->next = newnode;
+    }
+}
+
+void multiply(Node* poly1, Node* poly2, Node** result) {
+    Node* temp1 = poly1;
+    while (temp1 != NULL) {
+        Node* temp2 = poly2;
+        while (temp2 != NULL) {
+            int coeff = temp1->coeff * temp2->coeff;
+            int expo = temp1->expo + temp2->expo;
+            insert(result, coeff, expo);
+            temp2 = temp2->next;
+        }
+        temp1 = temp1->next;
+    }
+    
+    // Combine terms with the same exponent
+    Node* current = *result;
+    while (current != NULL && current->next != NULL) {
+        Node* prev = current;
+        Node* nextTerm = current->next;
+        while (nextTerm != NULL) {
+            if (current->expo == nextTerm->expo) {
+                // Combine terms by adding coefficients
+                current->coeff += nextTerm->coeff;
+                prev->next = nextTerm->next; // Remove duplicate term
+                free(nextTerm);
+                nextTerm = prev->next; // Move to the next term
+            } else {
+                prev = nextTerm;
+                nextTerm = nextTerm->next;
+            }
+        }
+        current = current->next;
+    }
+}
+
+
+
+void display(Node* poly) {
+    if (poly == NULL) {
+        printf("Polynomial is empty.\n");
+        return;
+    }
+    while (poly != NULL) {
+        printf("(%dx^%d) ", poly->coeff, poly->expo);
+        if (poly->next != NULL) {
+            printf("+ ");
+        }
+        poly = poly->next;
+    }
+    printf("\n");
+}
+
+void freeList(Node* head) {
+    Node* temp;
+    while (head != NULL) {
+        temp = head;
+        head = head->next;
+        free(temp);
+    }
+}
+
+int main() {
+    Node* poly1 = NULL;
+    Node* poly2 = NULL;
+    Node* result = NULL;
+    int coeff;
+    int expo;
+    int n1,n2;
+    
+    printf("POLYNOMIAL 1\n");
+    printf("enter the number of terms: ");
+    scanf("%d",&n1);
+    for(int i=0;i<n1;i++){
+        printf("enter coefficent: ");
+        scanf("%d",&coeff);
+        printf("enter exponent: ");
+        scanf("%d",&expo);
+        insert(&poly1,coeff,expo);
+    }
+    
+    printf("POLYNOMIAL 2\n");
+    printf("enter the number of terms: ");
+    scanf("%d",&n2);
+    for(int i=0;i<n2;i++){
+        printf("enter coefficent: ");
+        scanf("%d",&coeff);
+        printf("enter exponent: ");
+        scanf("%d",&expo);
+        insert(&poly2,coeff,expo);
+    }
+    printf("First polynomial: ");
+    display(poly1);
+    printf("Second polynomial: ");
+    display(poly2);
+
+    multiply(poly1, poly2, &result);
+    printf("Result of multiplication: ");
+    display(result);
+
+    return 0;
+}
