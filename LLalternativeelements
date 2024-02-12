@@ -1,0 +1,72 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct Node
+{
+    int data;
+    struct Node* next;
+} Node;
+
+Node* createNode(int data)
+{
+    Node* newnode = (Node*)malloc(sizeof(Node));
+    newnode->data = data;
+    newnode->next = NULL;
+    return newnode;
+}
+
+void insert(Node** head, int data)
+{
+    Node* newnode = createNode(data);
+    if (newnode == NULL)
+    {
+        printf("Memory insuff");
+    }
+    if (*head == NULL)
+    {
+        *head = newnode;
+    }
+    else
+    {
+        Node* curr = *head;
+        while (curr->next != NULL)
+        {
+            curr = curr->next;
+        }
+        curr->next = newnode;
+    }
+}
+
+void displayalt(Node* head)
+{
+    Node* ptr = head;
+    int i = 1;
+    while (ptr != NULL)
+    {
+        printf("%d --> ", ptr->data);
+        if (ptr->next != NULL)
+            ptr = ptr->next->next; // Advance by two nodes
+        else
+            break;
+    }
+    printf("NULL\n");
+}
+
+int main()
+{
+    int data;
+    char choice;
+    Node* linkedlist = NULL;
+    do
+    {
+        printf("Enter the data: ");
+        scanf("%d", &data);
+        insert(&linkedlist, data);
+        printf("Do you want to continue (y/n): ");
+        scanf(" %c", &choice); // Space before %c to consume whitespace and avoid issues
+    } while (choice == 'y');
+
+    displayalt(linkedlist);
+
+    return 0;
+}
